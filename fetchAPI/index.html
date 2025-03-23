@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script defer src="script.js"></script>
+      <title>Fetch API</title>
+      <style>
+         body {
+            background-color: black;
+            color: white;
+         }
+         #text {
+            display: flex;
+            margin: 4%;
+            gap: 4%;
+         }
+         #display {
+            display: flex;
+            margin: 4%;
+            gap: 4%;
+            flex-wrap: wrap;
+
+            &img {
+               height: 10%;
+            }
+         }
+
+         button {
+            display: block;
+         }
+      </style>
+   </head>
+   <body>
+      <div>
+         <button onclick="fetchData()">Fetch data to console</button>
+         <button onclick="fetchDataAndDisplay()">Fetch and display data</button>
+         <button onclick="fetchExternalAPIData()">display external data</button>
+         <button onclick="fetchPokemonAPI()">display Pokemon data</button>
+      </div>
+
+      <div>
+         <hr />
+         <input
+            type="text"
+            name="country"
+            id="country"
+            placeholder="enter a country here" />
+         <button onclick="fetchCountryAPI()">display NZ data</button>
+         <button onclick="fetchNewCountryAPI()">display Country data</button>
+      </div>
+      <div id="display">More API goes here</div>
+   </body>
+</html>
