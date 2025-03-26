@@ -3,7 +3,7 @@ import "./App.css";
 
 function App() {
    const [weatherData, setWeatherData] = useState(null);
-      useEffect(() => {
+   useEffect(() => {
       fetch(
          "http://api.weatherapi.com/v1/current.json?key=0bbf87f0fd724f3095c82017252603&q=Auckland&aqi=no"
       )
@@ -24,7 +24,7 @@ function App() {
 
    return (
       <div>
-        <button>Fetch Data</button>
+         <button>Fetch Data</button>
          {/* {weatherData ? (
             <div>
                <h1>Weather in {weatherData.location.name}</h1>
@@ -54,3 +54,19 @@ export default App;
 //   return result;
 // }
 // fetchData();
+
+// async function fetchData() {
+//    try {
+//       // fetch data from API endpoint
+//       const response = await fetch(
+//          `http://api.weatherapi.com/v1/current.json?key=0bbf87f0fd724f3095c82017252603&q=${userCity}&aqi=no`
+//       );
+//       if (!response.ok) throw new Error(`Error: ${response.status}`);
+//       const result = await response.json();
+//       // console.log(result);
+//       setWeatherData(result);
+//    } catch (error) {
+//       console.error("Error:", error);
+//    }
+// }
+//

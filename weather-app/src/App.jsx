@@ -1,60 +1,86 @@
+// Import React hooks and CSS
 import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
+   // Store weather data from API
    const [weatherData, setWeatherData] = useState(null);
-   const [userCity, setUserCity] = useState("Auckland");
-   async function fetchData() {
-      try {
-         // fetch data from API endpoint
-         const response = await fetch(
-            `http://api.weatherapi.com/v1/current.json?key=0bbf87f0fd724f3095c82017252603&q=${userCity}&aqi=no`
-         );
-         if (!response.ok) throw new Error(`Error: ${response.status}`);
-         const result = await response.json();
-         // console.log(result);
-         setWeatherData(result);
-      } catch (error) {
-         console.error("Error:", error);
-      }
+   // Track user input in city field
+   const [userCityInput, setUserCityInput] = useState("Auckland");
+
+
+   const [currentCity, setCurrentCity] = useState('Auckland')
+
+   function fetchWeather(userCityInput = "Auckland") {
+      fetch(
+         `https://api.weatherapi.com/v1/current.json?key=0bbf87f0fd724f3095c82017252603&q=${userCityInput}&aqi=no`
+      )
+         // convert response to JSON
+         .then((response) => response.json())
+         // handle response
+         .then((result) => {
+            console.log(result); // logs response
+            console.log("Temperature: ", result.current.temp_c); //
+            console.log("Location: ", result.location.name); //
+            setWeatherData(result); // store date in state
+         })
+         // Handle error if any
+         .catch((error) => console.error("Error", error));
    }
-   // On mount only
+
+   // Runs on mount
    useEffect(() => {
-      fetchData();
-   }, [fetchData, userCity]);
-   // }, [weatherData]);
+      // default city input = auckland
+      fetchWeather("Auckland");
+      // log data stored in state
+      console.log(weatherData);
+   }, []);
 
-   function handleChange(event) {
-      console.log(event.target.value);
-      const userInput = event.target.value;
-      setUserCity(userInput);
+   function handleChange(evt) {
+      console.log(evt.target.value);
+      // Update city input state to current input value
+      setUserCityInput(evt.target.value);
    }
 
-   function handleSubmit(event) {
-      event.preventDefault();
-      handleChange();
+   function handleSubmit(evt) {
+      // prevent default form behaviour
+      evt.preventDefault();
+      // fetchWeather for entered city
+      fetchWeather(userCityInput);
+      //Log submit event
+      // console.log(evt);
+      console.log("\u00B0");
    }
 
    return (
-      <div>
-         <h1>Gimme the weather</h1>
+      <>
          <form onSubmit={handleSubmit}>
-            <label htmlFor="city">Enter a city:</label>
-            <input type="text" id="city" onChange={handleChange} />
-            <button onClick={handleSubmit}>Fetch Data</button>
+            <h1>Weather App</h1>
+            <label htmlFor="city">Enter a city: </label>
+            {/* Update state on each keystroke */}
+            <input id="city" type="text" onChange={handleChange} />
+            <button type="submit">Get Data</button>
          </form>
+
+         {/* Conditionally render weather data. Display only when weatherData is truthy */}
          {weatherData && (
             <div>
                <h3>{weatherData.location.name}</h3>
-               <h4>The temperature is {weatherData.current.temp_c}°C </h4>
-               <p>It is: {weatherData.current.condition.text}</p>
+               <p>
+                  It is currently {weatherData.current.temp_c} {"\u00b0"}C and{" "}
+                  {weatherData.current.condition.text}
+               </p>
                <img
                   src={weatherData.current.condition.icon}
                   alt={weatherData.current.condition.text}
                />
+               <p>
+                  Wind conditions: {weatherData.current.wind_kph} km/h heading{" "}
+                  {weatherData.current.wind_dir}
+               </p>
             </div>
          )}
-      </div>
+      </>
    );
 }
 
